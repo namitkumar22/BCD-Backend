@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+storage/*.db
+storage/reports/*.pdf
+data/
+runs/
+models/torch_cache/
