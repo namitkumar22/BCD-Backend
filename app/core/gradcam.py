@@ -41,8 +41,24 @@ class GradCAM:
             if isinstance(module, torch.nn.ReLU):
                 module.inplace = False
         layer = _last_conv_layer(model)
-        layer.register_forward_hook(self._save_activations)
-        layer.register_full_backward_hook(self._save_gradients)
+        # Hooks are kept so they can be removed again. Registering them per
+        # request without cleanup would accumulate hooks on the shared model.
+        self._handles = [
+            layer.register_forward_hook(self._save_activations),
+            layer.register_full_backward_hook(self._save_gradients),
+        ]
+
+    def close(self) -> None:
+        """Detach the hooks from the model."""
+        for handle in self._handles:
+            handle.remove()
+        self._handles.clear()
+
+    def __enter__(self) -> "GradCAM":
+        return self
+
+    def __exit__(self, *exc_info) -> None:
+        self.close()
 
     def _save_activations(self, _module, _inputs, output) -> None:
         self.activations = output.detach()

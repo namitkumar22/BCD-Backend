@@ -38,10 +38,16 @@ class VGG19Classifier(nn.Module):
             nn.Linear(256, num_classes),
         )
 
+    def embed(self, x: torch.Tensor) -> torch.Tensor:
+        """Return the 512-dimensional pooled backbone feature vector."""
+        return self.pool(self.features(x)).flatten(1)
+
+    def classify(self, features: torch.Tensor) -> torch.Tensor:
+        """Map a pooled feature vector to class logits."""
+        return self.classifier(features)
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.features(x)
-        x = self.pool(x).flatten(1)
-        return self.classifier(x)
+        return self.classify(self.embed(x))
 
     @torch.no_grad()
     def predict_proba(self, x: torch.Tensor) -> torch.Tensor:

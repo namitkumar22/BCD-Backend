@@ -85,7 +85,20 @@ models/
     └── gradcam_examples.png
 ```
 
-## 5. Use the checkpoint in the API
+## 5. Build the input-domain reference statistics
+
+The API rejects non-histopathology uploads (faces, photographs, documents) using
+distances calibrated on the training patches:
+
+```bash
+.venv/Scripts/python training/build_reference_stats.py
+```
+
+Outputs `models/reference_stats.npz` (read by the API) and
+`models/reference_stats.json` (calibration report with per-split percentiles and
+probe scores). Re-run this whenever the checkpoint or backbone changes.
+
+## 6. Use the checkpoint in the API
 
 Copy `vgg19_breakhis.pt` and `metrics.json` into `Backend/models/` and restart
 the API. The checkpoint stores its own threshold, class names, mode and metrics,

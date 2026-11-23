@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "generated_at": "2026-11-23T14:00:09+00:00",
+  "checkpoint": "D:\\Namit Kumar\\Projects\\Breast Cancer Detection using VGG19\\Backend\\models\\vgg19_breakhis.pt",
+  "manifest": "D:\\Namit Kumar\\Projects\\Breast Cancer Detection using VGG19\\Backend\\data\\breakhis_40x_manifest.csv",
+  "reference_split": "train",
+  "n_reference": 1451,
+  "feature_dim": 512,
+  "color_features": [
+    "saturation_mean",
+    "saturated_fraction",
+    "brightness_mean",
+    "background_fraction",
+    "purple_fraction",
+    "pink_fraction",
+    "colorfulness",
+    "grayscale_fraction"
+  ],
+  "thresholds": {
+    "feature_threshold": 50.3296,
+    "feature_percentile": 99.9,
+    "stain_threshold": 5.6909,
+    "stain_percentile": 99.9,
+    "calibration_split": "val",
+    "quality": {
+      "min_sharpness": 0.00030462,
+      "min_brightness": 0.15,
+      "max_brightness": 0.99,
+      "max_dark_fraction": 0.85,
+      "max_clipped_bright_fraction": 0.9,
+      "max_grayscale_fraction": 0.995,
+      "max_grayscale_colorfulness": 0.012
+    }
+  },
+  "splits": {
+    "train": {
+      "n": 1451,
+      "feature_distance_percentiles": {
+        "50": 17.68,
+        "90": 25.3,
+        "95": 27.48,
+        "99": 30.86,
+        "99.9": 33.29
+      },
+      "stain_distance_percentiles": {
+        "50": 2.24,
+        "90": 3.91,
+        "95": 4.58,
+        "99": 6.61,
+        "99.9": 7.42
+      },
+      "false_reject_rate_at_threshold": 0.0,
+      "false_reject_rate_from_stain": 0.0262
+    },
+    "test": {
+      "n": 261,
+      "feature_distance_percentiles": {
+        "50": 22.64,
+        "90": 34.07,
+        "95": 37.28,
+        "99": 46.29,
+        "99.9": 53.05
+      },
+      "stain_distance_percentiles": {
+        "50": 2.4,
+        "90": 3.89,
+        "95": 4.52,
+        "99": 5.57,
+        "99.9": 6.93
+      },
+      "false_reject_rate_at_threshold": 0.0038,
+      "false_reject_rate_from_stain": 0.0038
+    },
+    "val": {
+      "n": 283,
+      "feature_distance_percentiles": {
+        "50": 20.53,
+        "90": 33.36,
+        "95": 37.35,
+        "99": 43.83,
+        "99.9": 50.33
+      },
+      "stain_distance_percentiles": {
+        "50": 2.07,
+        "90": 3.55,
+        "95": 4.03,
+        "99": 4.74,
+        "99.9": 5.69
+      },
+      "false_reject_rate_at_threshold": 0.0035,
+      "false_reject_rate_from_stain": 0.0035
+    }
+  },
+  "probes": [
+    {
+      "name": "face (Grace Hopper)",
+      "path": "D:\\Namit Kumar\\Projects\\Breast Cancer Detection using VGG19\\Backend\\.venv\\Lib\\site-packages\\matplotlib\\mpl-data\\sample_data\\grace_hopper.jpg",
+      "stain_distance": 11.09,
+      "domain_distance": 318.88,
+      "metrics": {
+        "width": 512,
+        "height": 600,
+        "brightness_mean": 0.4576,
+        "saturation_mean": 0.4327,
+        "saturated_fraction": 0.925,
+        "dark_fraction": 0.2872,
+        "clipped_bright_fraction": 0.0159,
+        "background_fraction": 0.0268,
+        "purple_fraction": 0.1789,
+        "pink_fraction": 0.0558,
+        "colorfulness": 0.2803,
+        "grayscale_fraction": 0.2595,
+        "sharpness": 0.015681
+      },
+      "rejected_by_stain": true,
+      "rejected_by_domain": true
+    },
+    {
+      "name": "photograph (Minduka)",
+      "path": "D:\\Namit Kumar\\Projects\\Breast Cancer Detection using VGG19\\Backend\\.venv\\Lib\\site-packages\\matplotlib\\mpl-data\\sample_data\\Minduka_Present_Blue_Pack.png",
+      "stain_distance": 15.6,
+      "domain_distance": 244.42,
+      "metrics": {
+        "width": 128,
+        "height": 128,
+        "brightness_mean": 0.8056,
+        "saturation_mean": 0.4141,
+        "saturated_fraction": 0.4959,
+        "dark_fraction": 0.1026,
+        "clipped_bright_fraction": 0.4894,
+        "background_fraction": 0.2337,
+        "purple_fraction": 0.0,
+        "pink_fraction": 0.0,
+        "colorfulness": 0.5031,
+        "grayscale_fraction": 0.495,
+        "sharpness": 0.003843
+      },
+      "rejected_by_stain": true,
+      "rejected_by_domain": true
+    },
+    {
+      "name": "logo (matplotlib)",
+      "path": "D:\\Namit Kumar\\Projects\\Breast Cancer Detection using VGG19\\Backend\\.venv\\Lib\\site-packages\\matplotlib\\mpl-data\\sample_data\\logo2.png",
+      "stain_distance": 13.68,
+      "domain_distance": 174.09,
+      "metrics": {
+        "width": 542,
+        "height": 130,
+        "brightness_mean": 0.3408,
+        "saturation_mean": 0.2716,
+        "saturated_fraction": 0.3511,
+        "dark_fraction": 0.5013,
+        "clipped_bright_fraction": 0.1273,
+        "background_fraction": 0.1406,
+        "purple_fraction": 0.0,
+        "pink_fraction": 0.0,
+        "colorfulness": 0.232,
+        "grayscale_fraction": 0.6394,
+        "sharpness": 0.00483
+      },
+      "rejected_by_stain": true,
+      "rejected_by_domain": true
+    },
+    {
+      "name": "synthetic document",
+      "path": "D:\\Namit Kumar\\Projects\\Breast Cancer Detection using VGG19\\Backend\\.tmp\\probes\\document.png",
+      "stain_distance": 11.09,
+      "domain_distance": 121.98,
+      "metrics": {
+        "width": 900,
+        "height": 700,
+        "brightness_mean": 0.8253,
+        "saturation_mean": 0.0,
+        "saturated_fraction": 0.0,
+        "dark_fraction": 0.0389,
+        "clipped_bright_fraction": 0.7127,
+        "background_fraction": 0.7423,
+        "purple_fraction": 0.0,
+        "pink_fraction": 0.0,
+        "colorfulness": 0.0,
+        "grayscale_fraction": 1.0,
+        "sharpness": 0.043116
+      },
+      "rejected_by_stain": true,
+      "rejected_by_domain": true
+    },
+    {
+      "name": "synthetic noise",
+      "path": "D:\\Namit Kumar\\Projects\\Breast Cancer Detection using VGG19\\Backend\\.tmp\\probes\\noise.png",
+      "stain_distance": 9.7,
+      "domain_distance": 35.71,
+      "metrics": {
+        "width": 224,
+        "height": 224,
+        "brightness_mean": 0.6605,
+        "saturation_mean": 0.4838,
+        "saturated_fraction": 0.9686,
+        "dark_fraction": 0.0,
+        "clipped_bright_fraction": 0.0,
+        "background_fraction": 0.0004,
+        "purple_fraction": 0.2237,
+        "pink_fraction": 0.0875,
+        "colorfulness": 0.3607,
+        "grayscale_fraction": 0.0075,
+        "sharpness": 0.154012
+      },
+      "rejected_by_stain": true,
+      "rejected_by_domain": false
+    }
+  ]
+}

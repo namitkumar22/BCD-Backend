@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field
 class HealthResponse(BaseModel):
     status: str
     model_ready: bool
+    input_validation_ready: bool = False
     version: str
     device: str
 
@@ -25,6 +26,14 @@ class ModelMetrics(BaseModel):
     n_samples: int | None = None
 
 
+class InputValidationInfo(BaseModel):
+    enabled: bool
+    ready: bool
+    reference_patches: int
+    feature_threshold: float | None = None
+    stain_threshold: float | None = None
+
+
 class ModelInfo(BaseModel):
     name: str
     architecture: str
@@ -37,6 +46,7 @@ class ModelInfo(BaseModel):
     dataset: str
     metrics: ModelMetrics
     total_predictions: int
+    input_validation: InputValidationInfo | None = None
 
 
 class Probabilities(BaseModel):

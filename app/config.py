@@ -19,7 +19,11 @@ class Settings(BaseSettings):
 
     model_path: Path = BACKEND_ROOT / "models" / "vgg19_breakhis.pt"
     metrics_path: Path = BACKEND_ROOT / "models" / "metrics.json"
+    reference_stats_path: Path = BACKEND_ROOT / "models" / "reference_stats.npz"
     torch_home: Path = BACKEND_ROOT / "models" / "torch_cache"
+
+    # Verify that an upload is histopathology before running the classifier.
+    input_validation: bool = True
 
     storage_dir: Path = BACKEND_ROOT / "storage"
     database_url: str = f"sqlite:///{(BACKEND_ROOT / 'storage' / 'app.db').as_posix()}"

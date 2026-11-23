@@ -6,4 +6,7 @@ storage/*.db
 storage/reports/*.pdf
 data/
 runs/
+.tmp/
 models/torch_cache/
+models/.reference_feature_cache.npz
+models/.build_stats*.log

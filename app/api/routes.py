@@ -17,6 +17,7 @@ from app.database import get_db
 from app.models import Prediction
 from app.schemas import (
     HealthResponse,
+    InputValidationInfo,
     ModelInfo,
     ModelMetrics,
     PredictionHistory,
@@ -26,6 +27,7 @@ from app.schemas import (
     StatsResponse,
 )
 from app.services.inference import DISCLAIMER, ModelNotReadyError, ModelService
+from app.services.input_gate import InputRejectedError
 from app.services.report import build_report
 from app.services.storage import InvalidImageError, load_upload, save_gradcam, save_upload
 
@@ -97,6 +99,7 @@ def health(service: Annotated[ModelService, Depends(get_model_service)]) -> Heal
     return HealthResponse(
         status="ok" if service.ready else "degraded",
         model_ready=service.ready,
+        input_validation_ready=service.gate.ready,
         version=settings.app_version,
         device=str(service.device),
     )
@@ -109,6 +112,7 @@ def model_info(
 ) -> ModelInfo:
     metrics = service.metrics or service.load_metrics_file()
     total = db.scalar(select(func.count(Prediction.id))) or 0
+    validation = service.validation_status()
     return ModelInfo(
         name="VGG19 Breast Cancer Classifier",
         architecture="VGG19 (ImageNet transfer learning) + 2-layer classifier head",
@@ -129,11 +133,30 @@ def model_info(
             n_samples=metrics.get("n_samples"),
         ),
         total_predictions=total,
+        input_validation=InputValidationInfo(
+            enabled=bool(validation["enabled"]),
+            ready=bool(validation["ready"]),
+            reference_patches=int(validation["reference_patches"]),
+            feature_threshold=validation["feature_threshold"],
+            stain_threshold=validation["stain_threshold"],
+        ),
     )
 
 
 # -------------------------------------------------------------------- predict
-@router.post("/predict", response_model=PredictionResponse, tags=["prediction"])
+@router.post(
+    "/predict",
+    response_model=PredictionResponse,
+    tags=["prediction"],
+    responses={
+        422: {
+            "description": (
+                "The upload is not an H&E-stained histopathology patch (or is unreadable). "
+                "The body contains a machine-readable reason and no prediction is stored."
+            )
+        }
+    },
+)
 async def predict(
     service: Annotated[ModelService, Depends(get_model_service)],
     db: Annotated[Session, Depends(get_db)],
@@ -152,6 +175,10 @@ async def predict(
 
     try:
         result = service.predict(image, want_grad_cam=generate_gradcam and settings.generate_gradcam)
+    except InputRejectedError as exc:
+        # A well-formed image that is outside the training domain never reaches
+        # the classifier and is never written to the prediction history.
+        raise HTTPException(status_code=422, detail=exc.result.payload()) from exc
     except ModelNotReadyError as exc:  # pragma: no cover - defensive
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 

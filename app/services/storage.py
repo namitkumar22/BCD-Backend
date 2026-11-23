@@ -6,7 +6,7 @@ import io
 import uuid
 from pathlib import Path
 
-from PIL import Image, UnidentifiedImageError
+from PIL import Image, ImageOps, UnidentifiedImageError
 
 from app.config import Settings
 
@@ -35,6 +35,8 @@ def load_upload(payload: bytes, filename: str, settings: Settings) -> tuple[Imag
         Image.MAX_IMAGE_PIXELS = 60_000_000
         image = Image.open(io.BytesIO(payload))
         image.load()
+        # Phone/camera EXIF orientation should not silently rotate a slide patch.
+        image = ImageOps.exif_transpose(image)
     except (UnidentifiedImageError, OSError, Image.DecompressionBombError) as exc:
         raise InvalidImageError("The file could not be read as a valid image.") from exc
 
